@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>User List</title>
+        <!-- CSS And JavaScript -->
+        <link rel="stylesheet"
+            href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+        <link rel="stylesheet"
+            href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
+        <link rel="stylesheet"
+            href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <h1>User List</h1>
+
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <form action="{% url 'myuser:create' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="myuser" class="col-sm-3 control-label">Name</label>
+                    <div class="col-sm-6">
+                        {{ form.username }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="myuser" class="col-sm-3 control-label">Age</label>
+                    <div class="col-sm-6">
+                        {{ form.age }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="myuser" class="col-sm-3 control-label">Email</label>
+                    <div class="col-sm-6">
+                        {{ form.email }}
+                    </div>
+                </div>
+
+                <!-- Add User Button -->
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-6">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-plus"></i> Add User
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+            
+            <h2>Current Users</h2>
+            <table class="table table-striped myuser-table">
+                <thead>
+                    <th>Name</th><th>age</th><th>Email</th><th> </th>
+                </thead>
+
+                <tbody>
+                    {% for post in posts %}
+                        <tr>
+                            <td>
+                                <div>{{ post.username }}</div>
+                            </td>
+                            <td>
+                                <div>{{ post.age }}</div>
+                            </td>
+                            <td>
+                                <div>{{ post.email }}</div>
+                            </td>
+                            <td>
+                                <form action="{% url 'myuser:delete' post.id %}" method="post">
+                                    {% csrf_token %}
+                                    <button>Del user</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </body>
+</html>
